@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link href="style/style.css" rel="stylesheet" type="text/css" />
+<style>
+body {
+	background-color:#CCC;
+}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Sent</title>
+</head>
+<?php
+     
+    // CHANGE THE TWO LINES BELOW
+    $email_to = "sam.bbeadle@googlemail.com";
+     
+    $email_subject = "Slideshow Error";
+     
+     $email_from = "Knowle Slideshow";
+    function died($error) {
+        // your error code can go here
+        echo "We are very sorry, but there were error(s) found with the form you submitted. ";
+        echo "These errors appear below.<br /><br />";
+        echo $error."<br /><br />";
+        echo "Please go back and fix these errors.<br /><br />";
+        die();
+    }
+     
+    // validation expected data exists
+    if(!isset($_POST['subject']) ||
+        !isset($_POST['last_name']) ||
+        !isset($_POST['comments'])) {
+        died('We are sorry, but there appears to be a problem with the form you submitted.');      
+    }
+     
+    $subject = $_POST['subject']; // required
+    $last_name = $_POST['last_name']; // required
+    $comments = $_POST['comments']; // required
+     
+    $error_message = "";
+    $string_exp = "/^[A-Za-z .'-]+$/";
+
+     
+    function clean_string($string) {
+      $bad = array("content-type","bcc:","to:","cc:","href");
+      return str_replace($bad,"",$string);
+    }
+ 
+    $email_message .= "Subject: ".clean_string($subject)."\n";
+    $email_message .= "Last Name: ".clean_string($last_name)."\n";
+    $email_message .= "Comments: ".clean_string($comments)."\n";
+     
+     
+// create email headers
+//$headers = 'From: '.$email_from."\r\n".
+//'Reply-To: '.$email_from."\r\n" .
+//'X-Mailer: PHP/' . phpversion();
+mail($email_to, $email_subject, $email_message); 
+?>
+ 
+<!-- place your own success html below -->
+<?php
+ echo '<div class="LoginContainer"><div class="ContainerHeader">Report a Problem</div>';
+echo'&nbsp;';
+echo'<div class="InputLogin">';
+echo "Thank you for Submitting";
+echo '</div>';
+echo '<div class="InputLogin">';
+echo '<a href="index.php">Click Here</a> to return to previous screen'; 
+echo '</div>';
+echo'</div>';
+?>
+ 
+
+<body>
+</body>
+</html>
